@@ -1,0 +1,21 @@
+{
+  "name": "gyupick",
+  "version": "1.0.0",
+  "description": "날씨와 기분에 어울리는 음악을 추천해 주는 웹 서비스",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "start": "node server/local.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "openai": "^7.55.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "vercel": "^65.14.0"
+  }
+}

@@ -1,0 +1,17 @@
+# 의존성 패키지
+node_modules/
+
+# Vercel 로컬 빌드 및 캐시
+.vercel/
+
+# 환경 변수 파일 (비밀 키 및 민감 정보 보호)
+.env*
+!.env.example
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+
+# 임시 스크립트 (개발용)
+create_table.mjs
+

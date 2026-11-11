@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>규픽 GyuPick - 오늘 날씨와 기분에 맞는 플레이리스트</title>
+  <!-- 프리미엄 폰트 Pretendard CDN 연결 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 백그라운드 앰비언트 글로우 조명 효과 -->
+  <div class="ambient-glow ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-2" aria-hidden="true"></div>
+
+  <!-- 서비스 헤더 -->
+  <header class="site-header">
+    <div class="container header-container">
+      <div class="logo-wrapper">
+        <span class="logo-icon">🎧</span>
+        <h1 class="logo">규픽 <span class="logo-sub">GyuPick</span></h1>
+      </div>
+      <span class="live-badge">AI CURATION</span>
+    </div>
+  </header>
+
+  <!-- 메인 2열 그리드 레이아웃 (좌측: TOP 30 차트, 우측: AI 추천 & 피드백) -->
+  <div class="container main-layout">
+    
+    <!-- [화면 좌측] 규픽 TOP 30 실시간 인기 차트 사이드바 -->
+    <aside class="sidebar-chart" aria-labelledby="chart-heading">
+      <div class="card glass-card chart-card">
+        <div class="chart-header">
+          <div class="chart-title-wrap">
+            <span class="chart-badge">LIVE CHART</span>
+            <h3 id="chart-heading" class="chart-title">실시간 TOP 30</h3>
+          </div>
+          <span class="chart-update-time">2026.11.11 15:00 기준</span>
+        </div>
+        <p class="chart-guide">💡 곡을 클릭하면 추천 입력창에 바로 적용돼요!</p>
+
+        <!-- 차트 스크롤 영역 -->
+        <div class="chart-list-scroll">
+          <ol class="top-chart-list" id="top-chart-list">
+            <!-- 자바스크립트 또는 정적으로 30곡 렌더링 -->
+          </ol>
+        </div>
+      </div>
+    </aside>
+
+    <!-- [화면 우측] 메인 콘텐츠 영역 -->
+    <main class="main-content">
+      <!-- 인트로 소개 섹션 -->
+      <section class="intro-section" aria-labelledby="intro-title">
+        <h2 id="intro-title" class="intro-title">오늘 날씨와 기분에 맞는<br><span class="text-gradient">나만의 특별한 플레이리스트</span></h2>
+        <p class="intro-desc">지금 날씨와 기분을 고르면 당신을 위한 감성 추천곡을 선물해 드려요.</p>
+      </section>
+
+      <!-- 추천 조건 입력 카드 -->
+      <section class="card glass-card" aria-labelledby="recommendation-heading">
+        <div class="card-header-bar">
+          <h3 id="recommendation-heading" class="section-title">음악 큐레이션 조건 선택</h3>
+          <span class="step-indicator">STEP 01</span>
+        </div>
+        
+        <form id="recommendation-form" novalidate>
+          <div class="form-grid">
+            <!-- 날씨 선택 칩 그룹 -->
+            <fieldset class="chip-group" id="weather-group">
+              <legend class="group-legend">
+                <span class="legend-icon">🌤️</span> 오늘 날씨 <span class="required" aria-hidden="true">*</span>
+              </legend>
+              <div class="chip-options">
+                <label class="chip-label">
+                  <input type="radio" name="weather" value="clear">
+                  <span class="chip-content">
+                    <span class="chip-emoji">☀️</span>
+                    <span class="chip-text">맑음</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="weather" value="cloudy">
+                  <span class="chip-content">
+                    <span class="chip-emoji">☁️</span>
+                    <span class="chip-text">흐림</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="weather" value="rain">
+                  <span class="chip-content">
+                    <span class="chip-emoji">🌧️</span>
+                    <span class="chip-text">비</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="weather" value="snow">
+                  <span class="chip-content">
+                    <span class="chip-emoji">❄️</span>
+                    <span class="chip-text">눈</span>
+                  </span>
+                </label>
+              </div>
+              <p id="weather-error" class="field-error" role="alert" aria-live="polite" hidden></p>
+            </fieldset>
+
+            <!-- 기분 선택 칩 그룹 -->
+            <fieldset class="chip-group" id="mood-group">
+              <legend class="group-legend">
+                <span class="legend-icon">✨</span> 지금 기분 <span class="required" aria-hidden="true">*</span>
+              </legend>
+              <div class="chip-options">
+                <label class="chip-label">
+                  <input type="radio" name="mood" value="happy">
+                  <span class="chip-content">
+                    <span class="chip-emoji">🥰</span>
+                    <span class="chip-text">기분 좋음</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="mood" value="calm">
+                  <span class="chip-content">
+                    <span class="chip-emoji">☕</span>
+                    <span class="chip-text">차분함</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="mood" value="sad">
+                  <span class="chip-content">
+                    <span class="chip-emoji">💧</span>
+                    <span class="chip-text">울적함</span>
+                  </span>
+                </label>
+                <label class="chip-label">
+                  <input type="radio" name="mood" value="tired">
+                  <span class="chip-content">
+                    <span class="chip-emoji">🔋</span>
+                    <span class="chip-text">피곤함</span>
+                  </span>
+                </label>
+              </div>
+              <p id="mood-error" class="field-error" role="alert" aria-live="polite" hidden></p>
+            </fieldset>
+          </div>
+
+          <!-- 듣고 싶은 음악 (선택 사항) -->
+          <div class="input-field-group">
+            <label for="preference-input" class="group-legend">
+              <span class="legend-icon">🎵</span> 듣고 싶은 음악 (선택)
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="preference-input" 
+                name="preference" 
+                placeholder="예를 들어 산책할 때 듣기 좋은 음악 또는 좌측 차트 곡 클릭"
+                aria-describedby="preference-count preference-error"
+              >
+            </div>
+            <div class="field-footer">
+              <p id="preference-error" class="field-error" role="alert" aria-live="polite" hidden></p>
+              <span id="preference-count" class="char-count" aria-live="polite">0 / 100자</span>
+            </div>
+          </div>
+
+          <!-- 추천 진행 상태 메시지 -->
+          <div id="recommend-status" class="status-message" role="status" aria-live="polite"></div>
+
+          <!-- 추천 제출 버튼 -->
+          <div class="form-actions">
+            <button type="submit" id="recommend-submit-btn" class="melon-btn">
+              <span class="btn-icon">⚡</span>
+              <span class="btn-text">추천받기</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 추천 결과 카드 (초기에는 숨김 처리) -->
+      <section id="recommendation-result" class="card result-card glass-card" aria-labelledby="result-title" hidden>
+        <div class="playlist-visual-header">
+          <div class="album-art-box">
+            <div class="lp-disc" aria-hidden="true"></div>
+            <div class="album-cover">
+              <span class="cover-icon">🎵</span>
+              <span class="cover-label">GYUPICK MIX</span>
+            </div>
+          </div>
+          <div class="playlist-meta">
+            <span class="curation-tag">TODAY'S SPECIAL PICK</span>
+            <h3 id="result-title" class="playlist-title"></h3>
+            <p class="playlist-subinfo">규픽 AI 큐레이터가 엄선한 5개의 감성 트랙</p>
+          </div>
+        </div>
+        
+        <div class="tracks-container">
+          <ol id="tracks-list" class="tracks-list"></ol>
+        </div>
+      </section>
+
+      <!-- 서비스 피드백 섹션 -->
+      <section class="card feedback-card glass-card" aria-labelledby="feedback-section-title">
+        <div class="card-header-bar">
+          <h3 id="feedback-section-title" class="section-title">서비스 피드백</h3>
+          <span class="step-indicator">COMMUNITY</span>
+        </div>
+        <p class="privacy-notice">작성한 내용은 누구나 볼 수 있어요. 개인정보는 적지 말아 주세요.</p>
+        
+        <form id="feedback-form" novalidate>
+          <div class="input-field-group">
+            <label for="feedback-body" class="group-legend">피드백</label>
+            <div class="input-wrapper">
+              <textarea 
+                id="feedback-body" 
+                name="body" 
+                rows="3" 
+                placeholder="규픽을 이용해 보신 소감이나 제안하고 싶은 내용을 자유롭게 남겨주세요."
+                aria-describedby="feedback-count feedback-error"
+              ></textarea>
+            </div>
+            <div class="field-footer">
+              <p id="feedback-error" class="field-error" role="alert" aria-live="polite" hidden></p>
+              <span id="feedback-count" class="char-count" aria-live="polite">0 / 500자</span>
+            </div>
+          </div>
+
+          <!-- 피드백 제출 상태 메시지 -->
+          <div id="feedback-status" class="status-message" role="status" aria-live="polite"></div>
+
+          <!-- 피드백 전송 버튼 -->
+          <div class="form-actions">
+            <button type="submit" id="feedback-submit-btn" class="melon-btn secondary-style">
+              <span class="btn-text">피드백 보내기</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="section-divider"></div>
+
+        <!-- 공개 피드백 목록 -->
+        <div class="feedback-list-section" aria-labelledby="feedback-list-heading">
+          <div class="feedback-list-header">
+            <h4 id="feedback-list-heading" class="sub-heading">최근 피드백</h4>
+            <button type="button" id="feedback-retry-btn" class="retry-btn" hidden>목록 다시 불러오기</button>
+          </div>
+
+          <!-- 목록 상태 안내 -->
+          <div id="feedback-list-status" class="status-message" role="status" aria-live="polite"></div>
+
+          <!-- 피드백 아이템 목록 -->
+          <ul id="feedback-items" class="feedback-items"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
